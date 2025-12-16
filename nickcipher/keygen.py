@@ -28,10 +28,6 @@ symbols = [".", ",","!"," "]
 #Här bor emoji-nyckeln:
 key_path = KEYS_DIR / "keys.json"
 
-for a in alphabet:
-    print(a)
-
-
 def find_duplicate_emojis(key_dict: dict) -> list[str]:
     seen = set()
     duplicates = []
@@ -54,13 +50,3 @@ def load_keys(key_path):
 
 keys = load_keys(key_path)
    
-print(type(keys))
-print(keys.keys())
-
-"""
-Skapa en emoji-nyckel baserad på en randomisering med seed.
-Varje tecken får exakt 5 unika emojis.
-Separator får exakt 5 unika emojis.
-Ingen emoji får förekomma mer än en gång i hela nyckeln.
-"""
-
