@@ -6,7 +6,7 @@ key_path = KEYS_DIR / "keys.json"
 
 keys = load_keys(key_path)
 
-original_text = "Hej Susanna vad roligt det är att jobba hela kvällen lång"
+original_text = "Hello Sindy, this is Nicks secret message, dont show it to anyone!"
 cipher = Emojicipher(keys, 200)
 
 results = cipher.encode(original_text)
