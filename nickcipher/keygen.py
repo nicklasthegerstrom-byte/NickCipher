@@ -1,6 +1,6 @@
 import random
 import json
-from config import KEYS_DIR
+from config import KEYS_DIR, BASE_DIR
 
 #Här bor funktion för att skapa en nyckel (JSON)
 
@@ -48,5 +48,34 @@ def load_keys(key_path):
 
     return key_dict
 
-keys = load_keys(key_path)
+import json
+
+
+def load_emojis(emoji_path):
+    try:
+        with open(emoji_path, "r", encoding="utf-8") as f:
+            emoji_pool = json.load(f)
+
+    except FileNotFoundError as e:
+        raise FileNotFoundError("Emoji-fil hittades inte") from e
+
+    except json.JSONDecodeError as e:
+        raise ValueError("Emoji-filen är inte giltig JSON") from e
+
+    if not isinstance(emoji_pool, list):
+        raise ValueError("Emoji-filen måste innehålla en lista")
+
+    if len(emoji_pool) != 200:
+        raise ValueError("Emoji-filen måste innehålla exakt 200 emojis")
+
+    return emoji_pool
+        
+
+    
+
+def load_weighted(weights):
+    with open(weights, "r", encoding="utf-8") as f:
+        weights = json.load(f)
+
+    return weights
    
