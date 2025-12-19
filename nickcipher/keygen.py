@@ -61,6 +61,8 @@ def load_emojis(emoji_path):
 
     if not isinstance(emoji_pool, list):
         raise ValueError("Emoji file must contain a list")
+    
+    print(len(emoji_pool))
 
     if len(emoji_pool) != 200:
         raise ValueError("Emoji file must contain exactly 200 emojis")
