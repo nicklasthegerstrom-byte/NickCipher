@@ -1,6 +1,5 @@
-import random
 import json
-from config import KEYS_DIR
+from nickcipher.config import KEYS_DIR
 
 #Här bor funktion för att skapa en nyckel (JSON)
 
@@ -28,10 +27,6 @@ symbols = [".", ",","!"," "]
 #Här bor emoji-nyckeln:
 key_path = KEYS_DIR / "keys.json"
 
-for a in alphabet:
-    print(a)
-
-
 def find_duplicate_emojis(key_dict: dict) -> list[str]:
     seen = set()
     duplicates = []
@@ -52,15 +47,50 @@ def load_keys(key_path):
 
     return key_dict
 
-keys = load_keys(key_path)
+
+def load_emojis(emoji_path):
+    try:
+        with open(emoji_path, "r", encoding="utf-8") as f:
+            emoji_pool = json.load(f)
+
+    except FileNotFoundError as e:
+        raise FileNotFoundError("Emoji file not found") from e
+
+    except json.JSONDecodeError as e:
+        raise ValueError("Emoji file is not valid JSON") from e
+
+    if not isinstance(emoji_pool, list):
+        raise ValueError("Emoji file must contain a list")
+
+    if len(emoji_pool) != 200:
+        raise ValueError("Emoji file must contain exactly 200 emojis")
+
+    return emoji_pool
+        
+
+def load_weights(weights_path):
+    try:
+        with open(weights_path, "r", encoding="utf-8") as f:
+            weights = json.load(f)
+
+    except FileNotFoundError as e:
+        raise FileNotFoundError("Weights file not found") from e
+
+    except json.JSONDecodeError as e:
+        raise ValueError("Weights file is not valid JSON") from e
+
+    if not isinstance(weights, dict):
+        raise ValueError("Weights file must contain a dictionary")
+
+    for char, value in weights.items():
+        if not isinstance(char, str):
+            raise ValueError("All weight keys must be strings")
+
+        if not isinstance(value, int):
+            raise ValueError(f"Weight for '{char}' must be an integer")
+
+        if value <= 1:
+            raise ValueError(f"Weight for '{char}' must be greater than one")
+
+    return weights
    
-print(type(keys))
-print(keys.keys())
-
-"""
-Skapa en emoji-nyckel baserad på en randomisering med seed.
-Varje tecken får exakt 5 unika emojis.
-Separator får exakt 5 unika emojis.
-Ingen emoji får förekomma mer än en gång i hela nyckeln.
-"""
-
