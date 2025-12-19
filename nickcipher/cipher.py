@@ -1,6 +1,4 @@
 import random
-from nickcipher.config import BASE_DIR
-
 
 class StaticEmojiCipher:
     
