@@ -2,10 +2,9 @@ import random
 
 class StaticEmojiCipher:
     
-    def __init__(self, key:dict, password:int):
+    def __init__(self, key:dict):
         
         self.key = key
-        self.password = password
 
         reversed_key = {}
         for letter in key:
@@ -16,7 +15,6 @@ class StaticEmojiCipher:
 
     def encode(self, text:str) -> str:
 
-        random.seed(self.password)
         encoded_result = ""
 
         for t in text:
@@ -28,7 +26,6 @@ class StaticEmojiCipher:
     
     def decode(self, emoji_code:str) -> str:
 
-        random.seed(self.password)
         decoded_result = ""
         for e in emoji_code:
             if e in self.reversed_key:
@@ -37,29 +34,28 @@ class StaticEmojiCipher:
 
 class DynamicEmojiCipher:
 
-    def __init__(self, emoji_pool, weights, password:int):
+    def __init__(self, emoji_pool, weights):
 
         self.emoji_pool = emoji_pool
         self.weights = weights
-        self.password = password
         self.key = None
         self.reversed_key = None
         
 
-    def generate_key(self):
+    def generate_key(self, password):
 
         required_emojis = sum(self.weights.values())
 
         if len(self.emoji_pool) < required_emojis:
             raise ValueError("Not enough emojis in pool")
        
-        random.seed(self.password)
+        random.seed(password)
         remaining_pool = self.emoji_pool.copy()
         self.key = {}
        
         for char in self.weights:
-           n = self.weights[char]
-           chosen_emojis = random.sample(remaining_pool, n)
+           amount = self.weights[char]
+           chosen_emojis = random.sample(remaining_pool, amount)
            self.key[char] = chosen_emojis
            remaining_pool = [e for e in remaining_pool if e not in chosen_emojis]
 
@@ -69,7 +65,7 @@ class DynamicEmojiCipher:
                 self.reversed_key[emoji] = letter
 
     
-    def encode(self, text):
+    def encode(self, text:str):
 
         if self.key is None:
             raise ValueError("No key generated")
@@ -85,7 +81,7 @@ class DynamicEmojiCipher:
             
         return encoded_result
     
-    def decode(self, text):
+    def decode(self, text:str):
 
         if self.reversed_key is None:
             raise ValueError("No decode key generated")
