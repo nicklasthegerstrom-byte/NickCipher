@@ -73,6 +73,9 @@ class DynamicEmojiCipher:
         encoded_result =""
 
         for t in text.lower():
+
+            if t not in self.key:
+                print(f"VARNING: Tecknet '{t}' (unicode: {ord(t)}) saknas i nyckeln! Använder fallback.")
             # Om tecknet inte finns i din weights/key, använd fallback-tecknet "$"
             target = t if t in self.key else "$"
             

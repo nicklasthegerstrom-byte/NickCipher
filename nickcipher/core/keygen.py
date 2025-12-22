@@ -89,7 +89,7 @@ def load_weights(weights_path):
         if not isinstance(value, int):
             raise ValueError(f"Weight for '{char}' must be an integer")
 
-        if value <= 1:
+        if value < 1:
             raise ValueError(f"Weight for '{char}' must be greater than one")
 
     return weights

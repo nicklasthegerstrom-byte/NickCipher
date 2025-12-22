@@ -13,7 +13,7 @@ weights = load_weights(weights_path)
 cipher = DynamicEmojiCipher(emoji_pool, weights)
 cipher.generate_key(12345)
 
-text = "I en värld som ständigt förändras har tekniken blivit den osynliga tråden som binder samman oss alla. För bara några decennier sedan var tanken på en global superdator i fickan inget annat än ren science fiction, men idag är det vår verklighet. Vi navigerar genom digitala landskap med en hastighet som våra förfäder aldrig hade kunnat föreställa sig."
+text = "Denna mening mäter om d-tecken och n-tecken hamnar rätt. Mamma och pappa minns nio nätter i november. 123 456 789. Det fungerar nu? Hoppas!"
 
 encoded_text = cipher.encode(text.lower())
 
@@ -21,3 +21,8 @@ print("Orginal text:")
 print(text)
 print("Krypterad text:")
 print(encoded_text)
+
+decoded_text = cipher.decode(encoded_text)
+
+print("Avkodad text:")
+print(decoded_text)
