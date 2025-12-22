@@ -27,17 +27,18 @@ symbols = [".", ",","!"," "]
 #Här bor emoji-nyckeln:
 key_path = KEYS_DIR / "keys.json"
 
-def find_duplicate_emojis(key_dict: dict) -> list[str]:
-    seen = set()
+def find_duplicate_emojis(key_dict: dict):
+    emoji_to_char = {}
     duplicates = []
 
     for char, emojis in key_dict.items():
         for emoji in emojis:
-            if emoji in seen:
-                duplicates.append(emoji)
+            if emoji in emoji_to_char:
+                # Vi har hittat en krock!
+                first_char = emoji_to_char[emoji]
+                duplicates.append(f"Emoji {emoji} används av både '{first_char}' och '{char}'")
             else:
-                seen.add(emoji)
-
+                emoji_to_char[emoji] = char
     return duplicates
 
 def load_keys(key_path):
@@ -94,3 +95,27 @@ def load_weights(weights_path):
 
     return weights
    
+
+def save_cipher_key(cipher_instance, filepath):
+    """Sparar nyckeln från ett NickCipher-objekt till en fil."""
+    if not cipher_instance.key:
+        print("Fel: Objektet har ingen nyckel att spara.")
+        return
+
+    data = {
+        "_WARNING": "GÖM DENNA NYCKEL! Innehåller din unika algoritm.",
+        "key": cipher_instance.key,
+        "reversed_key": cipher_instance.reversed_key
+    }
+
+    with open(filepath, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+    print(f"✅ Nyckel sparad till: {filepath}")
+
+def load_cipher_key(cipher_instance, filepath):
+    """Laddar in en sparad nyckel i ett NickCipher-objekt."""
+    with open(filepath, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+        cipher_instance.key = data['key']
+        cipher_instance.reversed_key = data['reversed_key']
+    print(f"✅ Nyckel laddad från: {filepath}")
