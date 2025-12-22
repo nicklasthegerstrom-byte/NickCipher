@@ -1,4 +1,4 @@
-from nickcipher.core.keygen import load_emojis, load_weights
+from nickcipher.core.keygen import load_emojis, load_weights, find_duplicate_emojis
 from nickcipher.config import BASE_DIR
 from nickcipher.core.cipher import DynamicEmojiCipher
 
@@ -8,6 +8,7 @@ weights_path = BASE_DIR / "char_weight.json"
 
 emoji_pool = load_emojis(emoji_path)
 weights = load_weights(weights_path)
+
 
 
 cipher = DynamicEmojiCipher(emoji_pool, weights)

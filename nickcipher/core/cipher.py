@@ -35,14 +35,20 @@ class StaticEmojiCipher:
 class DynamicEmojiCipher:
 
     def __init__(self, emoji_pool, weights):
-
-        self.emoji_pool = emoji_pool
+        
+        cleaned = [e.replace('\ufe0f', '') for e in emoji_pool]
+        self.emoji_pool = list(dict.fromkeys(cleaned))
+        
         self.weights = weights
         self.key = None
         self.reversed_key = None
+        # Denna kod tar bort den osynliga "Variation Selector 16" (\ufe0f) 
+# som ställer till det i din decode-loop.
         
 
     def generate_key(self, password):
+
+        self.emoji_pool = list(dict.fromkeys(self.emoji_pool))
 
         required_emojis = sum(self.weights.values())
 
