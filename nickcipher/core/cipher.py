@@ -72,12 +72,13 @@ class DynamicEmojiCipher:
         
         encoded_result =""
 
-        for t in text:
-            if t in self.key:
-                t_emoji = random.choice(self.key[t]) 
-                encoded_result += t_emoji
-            else:
-                raise ValueError(f"Character not allowed: {t}")
+        for t in text.lower():
+            # Om tecknet inte finns i din weights/key, använd fallback-tecknet "$"
+            target = t if t in self.key else "$"
+            
+            # Välj en slumpmässig emoji från poolen för det tecknet
+            t_emoji = random.choice(self.key[target])
+            encoded_result += t_emoji
             
         return encoded_result
     
