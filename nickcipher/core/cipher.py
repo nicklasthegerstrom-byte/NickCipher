@@ -1,4 +1,8 @@
 import random
+import hashlib
+import json
+from nickcipher.config import BASE_DIR
+
 
 class StaticEmojiCipher:
     
@@ -35,16 +39,30 @@ class StaticEmojiCipher:
 class DynamicEmojiCipher:
 
     def __init__(self, emoji_pool, weights):
-        
+
+        # Denna kod tar bort den osynliga "Variation Selector 16" (\ufe0f) 
         cleaned = [e.replace('\ufe0f', '') for e in emoji_pool]
         self.emoji_pool = list(dict.fromkeys(cleaned))
         
         self.weights = weights
         self.key = None
         self.reversed_key = None
-        # Denna kod tar bort den osynliga "Variation Selector 16" (\ufe0f) 
-# som ställer till det i din decode-loop.
         
+    @classmethod
+    def from_config(cls):
+        
+        # Definiera sökvägar här (eller hämta från config)
+        emoji_path = BASE_DIR / "emoji_pool.json"
+        weights_path = BASE_DIR / "char_weight.json"
+
+        # Ladda datan
+        with open(emoji_path, 'r', encoding='utf-8') as f:
+            pool = json.load(f)
+        with open(weights_path, 'r', encoding='utf-8') as f:
+            weights = json.load(f)
+
+    # Returnera en ny instans av klassen (cls anropar __init__)
+        return cls(pool, weights)
 
     def generate_key(self, password):
 
@@ -54,8 +72,12 @@ class DynamicEmojiCipher:
 
         if len(self.emoji_pool) < required_emojis:
             raise ValueError("Not enough emojis in pool")
+        
+        seed_hash = hashlib.sha256(password.encode()).digest()
+        seed_int = int.from_bytes(seed_hash, byteorder='big')
        
-        random.seed(password)
+        random.seed(seed_int)
+
         remaining_pool = self.emoji_pool.copy()
         self.key = {}
        
