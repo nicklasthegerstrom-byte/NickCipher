@@ -12,7 +12,7 @@ weights = load_weights(weights_path)
 
 
 cipher = DynamicEmojiCipher(emoji_pool, weights)
-cipher.generate_key(12345)
+cipher.generate_key("hejsan05")
 
 text = "Denna mening mäter om d-tecken och n-tecken hamnar rätt. Mamma och pappa minns nio nätter i november. 123 456 789. Det fungerar nu? Hoppas!"
 
