@@ -1,4 +1,8 @@
 import random
+import hashlib
+import json
+from nickcipher.config import BASE_DIR
+
 
 class StaticEmojiCipher:
     
@@ -36,20 +40,44 @@ class DynamicEmojiCipher:
 
     def __init__(self, emoji_pool, weights):
 
-        self.emoji_pool = emoji_pool
+        # Denna kod tar bort den osynliga "Variation Selector 16" (\ufe0f) 
+        cleaned = [e.replace('\ufe0f', '') for e in emoji_pool]
+        self.emoji_pool = list(dict.fromkeys(cleaned))
+        
         self.weights = weights
         self.key = None
         self.reversed_key = None
         
+    @classmethod
+    def from_config(cls):
+        
+        # Definiera sökvägar här (eller hämta från config)
+        emoji_path = BASE_DIR / "emoji_pool.json"
+        weights_path = BASE_DIR / "char_weight.json"
+
+        # Ladda datan
+        with open(emoji_path, 'r', encoding='utf-8') as f:
+            pool = json.load(f)
+        with open(weights_path, 'r', encoding='utf-8') as f:
+            weights = json.load(f)
+
+    # Returnera en ny instans av klassen (cls anropar __init__)
+        return cls(pool, weights)
 
     def generate_key(self, password):
+
+        self.emoji_pool = list(dict.fromkeys(self.emoji_pool))
 
         required_emojis = sum(self.weights.values())
 
         if len(self.emoji_pool) < required_emojis:
             raise ValueError("Not enough emojis in pool")
+        
+        seed_hash = hashlib.sha256(password.encode()).digest()
+        seed_int = int.from_bytes(seed_hash, byteorder='big')
        
-        random.seed(password)
+        random.seed(seed_int)
+
         remaining_pool = self.emoji_pool.copy()
         self.key = {}
        
@@ -72,12 +100,16 @@ class DynamicEmojiCipher:
         
         encoded_result =""
 
-        for t in text:
-            if t in self.key:
-                t_emoji = random.choice(self.key[t]) 
-                encoded_result += t_emoji
-            else:
-                raise ValueError(f"Character not allowed: {t}")
+        for t in text.lower():
+
+            if t not in self.key:
+                print(f"VARNING: Tecknet '{t}' (unicode: {ord(t)}) saknas i nyckeln! Använder fallback.")
+            # Om tecknet inte finns i din weights/key, använd fallback-tecknet "$"
+            target = t if t in self.key else "$"
+            
+            # Välj en slumpmässig emoji från poolen för det tecknet
+            t_emoji = random.choice(self.key[target])
+            encoded_result += t_emoji
             
         return encoded_result
     
