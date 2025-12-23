@@ -1,26 +1,10 @@
 from nickcipher.core.cipher import DynamicEmojiCipher
+from nickcipher.config import INPUT_DIR, OUTPUT_DIR
+from nickcipher.core.filehandler import is_safe_path, write_txt, select_txt_interaction, read_txt
+from nickcipher.ui.helpers import ask_yes_no, print_menu, perform_cipher_op, show_information, prompt_save_to_file, manage_key_interaction
 import os
 
-def ask_yes_no(prompt):
-    
-    while True:
-        answer = input(f"{prompt} (y/n): ").lower().strip()
-        if answer in ['y', 'yes']:
-            return True
-        if answer in ['n', 'no']:
-            return False
-        print("❌ Invalid input, please enter 'y' or 'n'.")
 
-def print_menu():
-    print("Welcome to NickCipher – your friendly text to emoji encryption tool.")
-    print()
-    print("1. Encrypt text (input)")
-    print("2. Decrypt text (input)")
-    print("3. Encrypt from file")
-    print("4. Decrypt from file")
-    print("5. Information")
-    print("6. Save/load encryption key")
-    print("7. Exit")
 
 def app():
     
@@ -30,31 +14,46 @@ def app():
         print_menu()
         choice = input("Make your choice: ")
 
-        if choice == "1": 
-            password_input = input("Choose password: ")
-            text_input = input("Input your text to encrypt here: ")
+        if choice in ["1", "2"]:
+            mode = 'encrypt' if choice == "1" else 'decrypt'
+            text = input(f"Enter text to {mode}: ")
+                
+            result = perform_cipher_op(cipher, text, mode)
+            print(f"\n--- RESULT ---\n{result}\n--------------")
 
-            cipher.generate_key(password_input)
-            result = cipher.encode(text_input)
+            prompt_save_to_file(result)
+                
 
-            print(f"\n--- ENCRYPTED RESULT ---\n{result}\n------------------------\n")
-            
-            if not ask_yes_no("Do you want to perform another action?"):
-                print("Exiting NickCipher. Have a secure day!")
-                break
+        elif choice == "3":
+            filename = select_txt_interaction(INPUT_DIR, "Input Folder")
+            if filename:
+                # Använd Path Traversal check i kombination med läsning
+                if is_safe_path(INPUT_DIR, filename):
+                    content = read_txt(INPUT_DIR / filename)
+                    result = perform_cipher_op(cipher, content, 'encrypt')
+                        
+                    out_name = f"enc_{filename}"
+                    write_txt(OUTPUT_DIR / out_name, result)
+                    print(f"✅ Success! Encrypted file: {out_name}")
 
-        elif choice == "2":
-            password_input = input("Input unique key password: ")
-            text_input = input("Input your text to decrypt here: ")
+            # --- VAL 4: FIL-AVKODNING ---
+        elif choice == "4":
+            filename = select_txt_interaction(OUTPUT_DIR, "Output Folder")
+            if filename:
+                if is_safe_path(OUTPUT_DIR, filename):
+                    content = read_txt(OUTPUT_DIR / filename)
+                    result = perform_cipher_op(cipher, content, 'decrypt')
+                    print(f"\n--- DECRYPTED CONTENT ---\n{result}\n-------------------------")
+                        
+                    if ask_yes_no("Save decrypted text to a new file?"):
+                        write_txt(OUTPUT_DIR / f"decrypted_{filename}", result)
+                        print("✅ Saved!")
+        
+        elif choice == "5":
+            manage_key_interaction(cipher)
 
-            cipher.generate_key(password_input)
-            result = cipher.decode(text_input)
-
-            print(f"\n--- DECRYPTED RESULT ---\n{result}\n------------------------\n")
-            
-            if not ask_yes_no("Do you want to perform another action?"):
-                print("Exiting NickCipher. Have a secure day!")
-                break
+        elif choice == "6":
+            show_information(cipher)
         
         elif choice == "7":
             if ask_yes_no("Are you sure you want to quit?"):

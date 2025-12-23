@@ -1,23 +1,4 @@
-from nickcipher.core.keygen import load_emojis, load_weights
-from nickcipher.config import BASE_DIR
-from nickcipher.core.cipher import DynamicEmojiCipher
+from nickcipher.ui.ui import app
 
-emoji_path = BASE_DIR / "emoji_pool.json"
+app()
 
-weights_path = BASE_DIR / "char_weight.json"
-
-emoji_pool = load_emojis(emoji_path)
-weights = load_weights(weights_path)
-
-
-cipher = DynamicEmojiCipher(emoji_pool, weights)
-cipher.generate_key(12345)
-
-text = "Hej här är text som jag bara vill testa för att se om kryptering funkar"
-
-encoded_text = cipher.encode(text.lower())
-
-print("Orginal text:")
-print(text)
-print("Krypterad text:")
-print(encoded_text)

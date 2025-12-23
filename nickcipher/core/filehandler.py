@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+import json
 
 def read_txt(filepath):
     """Läser in text från en fil."""
@@ -37,17 +38,21 @@ def list_txt_files(directory):
             if os.path.isfile(os.path.join(directory, f)) 
             and f.endswith('.txt')]
 
-def select_file_from_folder(folder_path, folder_name):
-    files = list_txt_files(folder_path)
+
+def select_txt_interaction(directory, folder_label):
+    """Hanterar listning och val av fil via siffra."""
+    files = list_txt_files(directory)
     if not files:
-        print(f"\n❌ No .txt files found in {folder_name}")
+        print(f"\nEmpty! No .txt files found in {folder_label}")
         return None
     
-    print(f"\n--- Available Files in {folder_name} ---")
+    print(f"\n--- Available Files in {folder_label} ---")
     for i, filename in enumerate(files, 1):
         print(f"{i}. {filename}")
     
-    choice = input("\nSelect file number: ")
+    choice = input("\nSelect file number (or 'q' to go back): ")
+    if choice.lower() == 'q': return None
+
     if choice.isdigit():
         idx = int(choice) - 1
         if 0 <= idx < len(files):
@@ -56,14 +61,33 @@ def select_file_from_folder(folder_path, folder_name):
     print("❌ Invalid selection.")
     return None
 
-def prompt_save_to_file(content):
-    if ask_yes_no("Would you like to save this to a file?"):
-        filename = input("Enter filename: ")
-        if not filename.endswith(".txt"):
-            filename += ".txt"
-        
-        if is_safe_path(OUTPUT_DIR, filename):
-            write_txt(OUTPUT_DIR / filename, content)
-            print(f"✅ Saved to {OUTPUT_DIR / filename}")
-        else:
-            print("❌ Invalid filename or path.")
+def save_json(path, data):
+    with open(path, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+
+def load_json(path):
+    with open(path, 'r', encoding='utf-8') as f:
+        return json.load(f)
+    
+def list_json_files(directory):
+    path = Path(directory)
+    return [f.name for f in path.glob("*.json")]
+
+def select_json_interaction(directory, folder_label):
+    """Hanterar listning och val av JSON-nycklar."""
+    files = list_json_files(directory) # Använder den nya funktionen ovan
+    
+    if not files:
+        print(f"\nNo keys found in {folder_label}")
+        return None
+    
+    print(f"\n--- Available Keys ---")
+    for i, filename in enumerate(files, 1):
+        print(f"{i}. {filename}")
+    
+    choice = input("\nSelect key number (or 'q'): ")
+    if choice.isdigit():
+        idx = int(choice) - 1
+        if 0 <= idx < len(files):
+            return files[idx]
+    return None
