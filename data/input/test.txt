@@ -1,0 +1,7 @@
+Detta är en längre testtext som är tänkt att användas för att kontrollera hur väl ett krypteringsprogram fungerar i praktiken. Texten innehåller både korta och långa meningar, vanliga ord, ovanligare bokstäver som å, ä och ö, samt skiljetecken som komma, punkt och utropstecken.
+
+Syftet är inte att säga något särskilt viktigt, utan snarare att efterlikna hur verklig text brukar se ut när människor skriver till varandra. I verkliga scenarier kan text innehålla upprepningar, variation i längd, och ibland även små fel eller konstiga formuleringar. Allt detta är bra att testa mot.
+
+Om ditt program klarar av att kryptera denna text till en lång sekvens av emojis, och sedan korrekt avkoda den tillbaka till exakt samma text igen, då har du byggt något som fungerar på riktigt. Det är ofta i dessa detaljer som buggar och logiska misstag dyker upp.
+
+Slutligen är det värt att komma ihåg att läsbarhet och struktur i koden är minst lika viktigt som att programmet fungerar. Ett tydligt program är lättare att förstå, testa och vidareutveckla, även när det handlar om något så lekfullt som att förvandla text till emojis.
