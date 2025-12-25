@@ -1,0 +1,11 @@
+# NickCipher - Requirements
+# This project uses only the Python Standard Library.
+# Minimum Python version: 3.9
+
+# Standard modules used:
+# - hashlib (for SHA-256)
+# - json (for key and data storage)
+# - pathlib (for secure path handling)
+# - logging (for event tracking)
+# - random (for key generation)
+# - os (for file operations)
