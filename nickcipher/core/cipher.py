@@ -47,6 +47,16 @@ class DynamicEmojiCipher:
         self.weights = weights
         self.key = None
         self.reversed_key = None
+
+    #Funktion för att bygga reserved key vid inläsning av nyckel från json
+    def load_reversed_key(self, key_map):
+        """Laddar en färdig nyckel och bygger den omvända mappen."""
+        self.key = key_map
+        self.reversed_key = {}
+        
+        for letter in self.key:
+            for emoji in self.key[letter]:
+                self.reversed_key[emoji] = letter
         
     @classmethod
     def from_config(cls):

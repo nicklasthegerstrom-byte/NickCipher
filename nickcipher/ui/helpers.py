@@ -65,15 +65,31 @@ def prompt_save_to_file(content):
             print("❌ Invalid filename or path.")
 
 def print_menu():
-    print("Welcome to NickCipher – your friendly text to emoji encryption tool.")
-    print()
-    print("1. Encrypt text (input)")
-    print("2. Decrypt text (input)")
-    print("3. Encrypt from file")
-    print("4. Decrypt from file")
-    print("5. Save/load encryption key")
-    print("6. Information")
-    print("7. Exit")
+    # En stilren ASCII-logga
+    print(r"""
+    _   _ _      _      _____ _       _               
+   | \ | (_)    | |    / ____(_)     | |              
+   |  \| |_  ___| | __| |     _ _ __ | |__   ___ _ __ 
+   | . ` | |/ __| |/ /| |    | | '_ \| '_ \ / _ \ '__|
+   | |\  | | (__|   < | |____| | |_) | | | |  __/ |   
+   |_| \_|_|\___|_|\_\ \_____|_| .__/|_| |_|\___|_|   
+                               | |                    
+                               |_|                    
+    """)
+    print("—" * 55)
+    print("       Welcome to NickCipher – Your friendly Emoji Encryption Tool      ")
+    print("—" * 55)
+    
+    # Menyn i en snygg lista
+    print(" [1]  Encrypt text (input)")
+    print(" [2]  Decrypt text (input)")
+    print(" [3]  Encrypt from file (.txt)")
+    print(" [4]  Decrypt from file (.txt)")
+    print(" [5]  Key Management (Save/Load)")
+    print(" [6]  Information & Security")
+    print(" [7]  Exit")
+    print("—" * 55)
+    print("Selection: ", end="")
 
 def show_information(cipher):
     # Dynamisk hämtning av data från cipher-objektet
@@ -142,6 +158,8 @@ def manage_key_interaction(cipher):
             
             # Ladda in den i objektet så att encrypt/decrypt kan använda den
             cipher.key = key_data
+            #skapa en reversed key
+            cipher.load_reversed_key(key_data)
             print(f"\n✅ Key '{filename}' is now ACTIVE.")
             print("   You can now decrypt files without entering a password.")
     else:

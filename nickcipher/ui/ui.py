@@ -58,5 +58,7 @@ def app():
         elif choice == "7":
             if ask_yes_no("Are you sure you want to quit?"):
                 break
-            
+
+        else:
+            print("❌ Not valid input. Try again!")            
 
