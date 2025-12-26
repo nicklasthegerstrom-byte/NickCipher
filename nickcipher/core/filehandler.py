@@ -1,21 +1,28 @@
 from pathlib import Path
 import os
 import json
+from nickcipher.utils.logger import get_logger
+logger = get_logger("filehandler")
+
 
 def read_txt(filepath):
     """Läser in text från en fil."""
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
+            logger.info(f"User opened text from file: {filepath}")
             return f.read()
     except FileNotFoundError:
+        logger.info(f"Failed to open file: {filepath}")
         print(f"Kunde inte hitta filen: {filepath}")
         return None
 
 def write_txt(filepath, content):
-    """Sparar text (t.ex. emojis) till en fil."""
-    with open(filepath, 'w', encoding='utf-8') as f:
-        f.write(content)
-    print(f"✅ Text sparad till {filepath}")
+    try:
+        with open(filepath, 'w', encoding='utf-8') as f:
+            f.write(content)
+        logger.info(f"Saved text file: {filepath}")
+    except Exception as e:
+        logger.error(f"Failed to save file {filepath}: {e}")
 
 
 def is_safe_path(base_dir, user_input):
@@ -59,15 +66,29 @@ def select_txt_interaction(directory, folder_label):
             return files[idx]
     
     print("❌ Invalid selection.")
+    logger.info("User made invalid selection from file list")
     return None
 
 def save_json(path, data):
-    with open(path, 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
+    try:
+        with open(path, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=4)
+        logger.info(f"JSON saved: {path}")
+    except Exception as e:
+        logger.error(f"Failed saving JSON {path}: {e}")
+
 
 def load_json(path):
-    with open(path, 'r', encoding='utf-8') as f:
-        return json.load(f)
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            logger.info(f"Loaded JSON: {path}")
+            return json.load(f)
+    except json.JSONDecodeError:
+        logger.error(f"Invalid JSON format in: {path}")
+        return None
+    except FileNotFoundError:
+        logger.warning(f"JSON file not found: {path}")
+        return None
     
 def list_json_files(directory):
     path = Path(directory)

@@ -8,6 +8,4 @@ BASE_DIR = DATA_DIR / "base"
 INPUT_DIR = DATA_DIR / "input"
 OUTPUT_DIR = DATA_DIR / "output"
 KEYS_DIR = DATA_DIR / "keys"
-
-print(PROJECT_ROOT)
-print(DATA_DIR)
+LOGS_DIR = PROJECT_ROOT / "logs"

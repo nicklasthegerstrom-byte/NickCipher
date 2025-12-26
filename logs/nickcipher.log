@@ -1,0 +1,11 @@
+2025-12-26 13:56:29 [INFO] User requested encryption
+2025-12-26 13:56:32 [INFO] User generated key with password
+2025-12-26 13:56:32 [INFO] Text encrypttion activated
+2025-12-26 13:56:38 [INFO] Saved text file: /Users/nicklas.thegerstrom/ws/projects/nickcipher/data/output/testlogger.txt
+2025-12-26 13:56:38 [INFO] New file saved as /Users/nicklas.thegerstrom/ws/projects/nickcipher/data/output/testlogger.txt
+2025-12-26 13:56:48 [INFO] User opened text from file: /Users/nicklas.thegerstrom/ws/projects/nickcipher/data/output/testlogger.txt
+2025-12-26 13:56:48 [INFO] User requested decryption
+2025-12-26 13:56:48 [INFO] Active key loaded in memory
+2025-12-26 13:56:52 [INFO] User discarded loaded key, generating new from password
+2025-12-26 13:56:56 [INFO] Text decryption activated
+2025-12-26 13:57:05 [INFO] User exited application

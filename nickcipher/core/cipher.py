@@ -2,7 +2,7 @@ import random
 import hashlib
 import json
 from nickcipher.config import BASE_DIR
-
+from nickcipher.utils.logger import get_logger
 
 class StaticEmojiCipher:
     
@@ -47,6 +47,8 @@ class DynamicEmojiCipher:
         self.weights = weights
         self.key = None
         self.reversed_key = None
+
+        self.logger = get_logger("cipher")
 
     #Funktion för att bygga reserved key vid inläsning av nyckel från json
     def load_reversed_key(self, key_map):
@@ -101,6 +103,7 @@ class DynamicEmojiCipher:
         for letter in self.key:
             for emoji in self.key[letter]:
                 self.reversed_key[emoji] = letter
+
 
     
     def encode(self, text:str):

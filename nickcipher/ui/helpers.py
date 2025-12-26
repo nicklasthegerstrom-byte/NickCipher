@@ -2,6 +2,10 @@ from nickcipher.core.cipher import DynamicEmojiCipher
 from nickcipher.config import OUTPUT_DIR, KEYS_DIR, DATA_DIR
 from nickcipher.core.filehandler import is_safe_path, write_txt, save_json, load_json, select_json_interaction
 import getpass
+from nickcipher.utils.logger import get_logger
+
+
+logger = get_logger("cipher")
 
 def ask_yes_no(prompt):
     
@@ -24,9 +28,11 @@ def get_secure_password(prompt="Enter password: "):
 def perform_cipher_op(cipher, text, mode='encrypt'):
     """Bakar ihop lösenord, nyckelgen och kodning med stöd för sparad nyckel."""
     action = "encryption" if mode == 'encrypt' else "decryption"
+    logger.info(f"User requested {action}")
     
     # 1. Kolla om vi redan har en nyckel i minnet
     if cipher.key:
+        logger.info("Active key loaded in memory")
         print("\n" + "—" * 40)
         print(f"🔑 ACTIVE KEY DETECTED")
         print(f"An emoji-key is already loaded.")
@@ -35,21 +41,26 @@ def perform_cipher_op(cipher, text, mode='encrypt'):
         use_active = input(f"Use active key for {action}? (y/n): ").lower()
         
         if use_active != 'y':
+            logger.info("User discarded loaded key, generating new from password")
             # Om användaren väljer 'n', rensa och kör standard lösenords-input
             print("🔄 Clearing memory...")
             cipher.key = {}
             pwd = get_secure_password(f"Enter NEW password for {action}: ")
             cipher.generate_key(pwd)
         else:
+            logger.info("User contiuing with active key")
             print(f"✅ Continuing with active key...")
     else:
         # 2. Om ingen nyckel finns, kör som vanligt
         pwd = get_secure_password(f"Enter password for {action}: ")
+        logger.info("User generated key with password")
         cipher.generate_key(pwd)
     
     # 3. Kör själva kodningen/avkodningen
     if mode == 'encrypt':
+        logger.info("Text encrypttion activated")
         return cipher.encode(text)
+    logger.info("Text decryption activated")
     return cipher.decode(text)
 
 def prompt_save_to_file(content):
@@ -60,8 +71,10 @@ def prompt_save_to_file(content):
         
         if is_safe_path(OUTPUT_DIR, filename):
             write_txt(OUTPUT_DIR / filename, content)
+            logger.info(f"New file saved as {OUTPUT_DIR / filename}")
             print(f"✅ Saved to {OUTPUT_DIR / filename}")
         else:
+            logger.info("Failed to save file")
             print("❌ Invalid filename or path.")
 
 def print_menu():
@@ -145,9 +158,11 @@ def manage_key_interaction(cipher):
             
             # 4. Spara cipher.key 
             save_json(save_path, cipher.key)
+            logger.info(f"User saved key to {save_path} ")
             print(f"\n✅ Key successfully exported to:")
             print(f"   {save_path}")
         else:
+            logger.warning("SECURITY ALERT: Possible path traversal attempt blocked")
             print("\n🚨 SECURITY ALERT: Path traversal attempt blocked!")
 
     elif choice == "2":
@@ -160,6 +175,7 @@ def manage_key_interaction(cipher):
             cipher.key = key_data
             #skapa en reversed key
             cipher.load_reversed_key(key_data)
+            logger.info(f"User loaded key {filename} from file")
             print(f"\n✅ Key '{filename}' is now ACTIVE.")
             print("   You can now decrypt files without entering a password.")
     else:

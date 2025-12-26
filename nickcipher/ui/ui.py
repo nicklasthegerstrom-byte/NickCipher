@@ -2,9 +2,9 @@ from nickcipher.core.cipher import DynamicEmojiCipher
 from nickcipher.config import INPUT_DIR, OUTPUT_DIR
 from nickcipher.core.filehandler import is_safe_path, write_txt, select_txt_interaction, read_txt
 from nickcipher.ui.helpers import ask_yes_no, print_menu, perform_cipher_op, show_information, prompt_save_to_file, manage_key_interaction
-import os
+from nickcipher.utils.logger import get_logger
 
-
+logger = get_logger("ui")
 
 def app():
     
@@ -53,12 +53,15 @@ def app():
             manage_key_interaction(cipher)
 
         elif choice == "6":
+            logger.info("User choose to read information")
             show_information(cipher)
         
         elif choice == "7":
             if ask_yes_no("Are you sure you want to quit?"):
+                logger.info("User exited application")
                 break
 
         else:
+            logger.info("User did wrong input")
             print("❌ Not valid input. Try again!")            
 
