@@ -3,9 +3,10 @@ from nickcipher.config import OUTPUT_DIR, KEYS_DIR, DATA_DIR
 from nickcipher.core.filehandler import is_safe_path, write_txt, save_json, load_json, select_json_interaction
 import getpass
 from nickcipher.utils.logger import get_logger
+import math
 
 
-logger = get_logger("cipher")
+logger = get_logger("helpers")
 
 def ask_yes_no(prompt):
     
@@ -71,7 +72,6 @@ def prompt_save_to_file(content):
         
         if is_safe_path(OUTPUT_DIR, filename):
             write_txt(OUTPUT_DIR / filename, content)
-            logger.info(f"New file saved as {OUTPUT_DIR / filename}")
             print(f"✅ Saved to {OUTPUT_DIR / filename}")
         else:
             logger.info("Failed to save file")
@@ -104,10 +104,22 @@ def print_menu():
     print("—" * 55)
     print("Selection: ", end="")
 
+def estimate_keyspace_digits(pool_size: int, total_slots: int) -> int:
+    """Return approx number of decimal digits in P(pool_size, total_slots)."""
+    if total_slots > pool_size:
+        return 0  # eller raisa ValueError om du vill vara strikt
+
+    log10_p = 0.0
+    for i in range(pool_size - total_slots + 1, pool_size + 1):
+        log10_p += math.log10(i)
+    return int(log10_p) + 1
+
 def show_information(cipher):
     # Dynamisk hämtning av data från cipher-objektet
     pool_size = len(cipher.emoji_pool)
     total_slots = sum(cipher.weights.values())
+
+    digits = estimate_keyspace_digits(pool_size, total_slots)
 
     print("\n" + "—" * 65)
     print("🕵️  NICKCIPHER - SECURITY BRIEFING")
@@ -125,11 +137,11 @@ def show_information(cipher):
     print(f"   The number of unique ways to arrange the emoji-key is:")
     print(f"   P({pool_size}, {total_slots}) = {pool_size}! / ({pool_size} - {total_slots})!")  
     print()
-    print(f"   RESULT: A number with ~589 digits.")
+    print(f"   RESULT: A number with ~{digits} digits.")
     print(f"   COMPARE: Atoms in the universe ≈ 10^80.")
     print()
     print("   Conclusion: Your key-space is larger than life so a brute-force")
-    print("   attack on the emoji-key is physically impossible.")
+    print("   attack is computationally infeasible")
     print("—" * 65)
     input("\nPress any key to return to menu...")
 
