@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=67.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nickcipher"
+version = "0.1.0"
+description = "Emoji-based cipher tool for CLI using weighted randomly generated keys."
+authors = [
+    { name="Nicklas Thegerström" } 
+    { e-mail="nicklas.thegerstrom@gmail.com" } 
+]
+readme = "README.md"
+requires-python = ">=3.9"
+
+[project.scripts]
+nickcipher = "nickcipher.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["tests*", "examples*"]
