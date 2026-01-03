@@ -27,35 +27,13 @@ def get_secure_password(prompt="Enter password: "):
         print("❌ Password must be at least 4 characters.")
 
 def perform_cipher_op(cipher, text, mode='encrypt'):
-    """Bakar ihop lösenord, nyckelgen och kodning med stöd för sparad nyckel."""
+    
     action = "encryption" if mode == 'encrypt' else "decryption"
     logger.info(f"User requested {action}")
-    
-    # 1. Kolla om vi redan har en nyckel i minnet
-    if cipher.key:
-        logger.info("Active key loaded in memory")
-        print("\n" + "—" * 40)
-        print(f"🔑 ACTIVE KEY DETECTED")
-        print(f"An emoji-key is already loaded.")
-        print("—" * 40)
-        
-        use_active = input(f"Use active key for {action}? (y/n): ").lower()
-        
-        if use_active != 'y':
-            logger.info("User discarded loaded key, generating new from password")
-            # Om användaren väljer 'n', rensa och kör standard lösenords-input
-            print("🔄 Clearing memory...")
-            cipher.key = {}
-            pwd = get_secure_password(f"Enter NEW password for {action}: ")
-            cipher.generate_key(pwd)
-        else:
-            logger.info("User contiuing with active key")
-            print(f"✅ Continuing with active key...")
-    else:
-        # 2. Om ingen nyckel finns, kör som vanligt
-        pwd = get_secure_password(f"Enter password for {action}: ")
-        logger.info("User generated key with password")
-        cipher.generate_key(pwd)
+
+    pwd = get_secure_password(f"Enter password for {action}: ")
+    logger.info("User generated key with password")
+    cipher.generate_key(pwd)
     
     # 3. Kör själva kodningen/avkodningen
     if mode == 'encrypt':
