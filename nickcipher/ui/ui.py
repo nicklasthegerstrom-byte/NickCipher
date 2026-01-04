@@ -7,12 +7,13 @@ from nickcipher.utils.logger import get_logger
 logger = get_logger("ui")
 
 def app():
-    
+   
     cipher = DynamicEmojiCipher.from_config()
 
     while True:
-        print_menu()
+        print_menu(cipher)
         choice = input("Make your choice: ")
+
 
         if choice in ["1", "2"]:
             mode = 'encrypt' if choice == "1" else 'decrypt'
@@ -22,7 +23,7 @@ def app():
             print(f"\n--- RESULT ---\n{result}\n--------------")
 
             prompt_save_to_file(result)
-                
+                            
 
         elif choice == "3":
             filename = select_txt_interaction(INPUT_DIR, "Input Folder")
@@ -50,13 +51,18 @@ def app():
                         print("✅ Saved!")
         
         elif choice == "5":
-            manage_key_interaction(cipher)
+            cipher.erase_key()
+            print("Key cleared from session memory")
+            logger.info("User cleared key from memory")
 
         elif choice == "6":
+            manage_key_interaction(cipher)
+
+        elif choice == "7":
             logger.info("User choose to read information")
             show_information(cipher)
         
-        elif choice == "7":
+        elif choice == "8":
             if ask_yes_no("Are you sure you want to quit?"):
                 logger.info("User exited application")
                 break

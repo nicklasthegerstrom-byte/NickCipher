@@ -27,3 +27,22 @@
 2025-12-26 16:41:39 [INFO] User exited application
 2025-12-26 17:42:40 [INFO] User choose to read information
 2025-12-26 18:14:04 [INFO] User exited application
+2026-01-04 21:50:27 [INFO] User exited application
+2026-01-04 21:50:36 [INFO] User did wrong input
+2026-01-04 21:50:43 [INFO] User requested encryption
+2026-01-04 21:50:56 [INFO] Encoding text...
+2026-01-04 21:51:11 [INFO] User requested encryption
+2026-01-04 21:51:11 [INFO] Encoding text...
+2026-01-04 21:51:21 [INFO] Saved text file: /Users/nicklas.thegerstrom/ws/projects/nickcipher/data/output/keytest.txt
+2026-01-04 21:51:33 [INFO] User opened text from file: /Users/nicklas.thegerstrom/ws/projects/nickcipher/data/output/keytest.txt
+2026-01-04 21:51:33 [INFO] User requested decryption
+2026-01-04 21:51:33 [INFO] Decoding text...
+2026-01-04 21:51:43 [INFO] User did wrong input
+2026-01-04 21:51:44 [INFO] User did wrong input
+2026-01-04 21:51:47 [INFO] User did wrong input
+2026-01-04 21:51:50 [INFO] User did wrong input
+2026-01-04 21:51:51 [INFO] User did wrong input
+2026-01-04 21:51:58 [INFO] User exited application
+2026-01-05 00:26:45 [INFO] JSON saved: /Users/nicklas.thegerstrom/ws/projects/nickcipher/data/keys/lurig.json
+2026-01-05 00:26:45 [INFO] User saved key to /Users/nicklas.thegerstrom/ws/projects/nickcipher/data/keys/lurig.json
+2026-01-05 00:48:07 [INFO] User exited application

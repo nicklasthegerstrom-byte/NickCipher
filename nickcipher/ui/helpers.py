@@ -26,21 +26,39 @@ def get_secure_password(prompt="Enter password: "):
             return pwd
         print("❌ Password must be at least 4 characters.")
 
+
 def perform_cipher_op(cipher, text, mode='encrypt'):
-    
     action = "encryption" if mode == 'encrypt' else "decryption"
     logger.info(f"User requested {action}")
 
-    pwd = get_secure_password(f"Enter password for {action}: ")
-    logger.info("User generated key with password")
-    cipher.generate_key(pwd)
-    
-    # 3. Kör själva kodningen/avkodningen
-    if mode == 'encrypt':
-        logger.info("Text encrypttion activated")
-        return cipher.encode(text)
-    logger.info("Text decryption activated")
-    return cipher.decode(text)
+    # 1. Nyckelhantering
+    if cipher.key is None:
+        pwd = get_secure_password(f"Enter password for {action}: ")
+        cipher.generate_key(pwd)
+        
+        if cipher.session_lock is None:
+            if ask_yes_no("Do you want to save this key in session memory (No password, proceed with caution!)"):
+                cipher.session_lock = True
+                print("✅ Key locked to session memory.")
+            else:
+                cipher.session_lock = False
+                print("🛡️ High-security mode: Key will be cleared after this operation.")
+
+    # 2. Utförande med garanterad städning
+    try:
+        if mode == 'encrypt':
+            logger.info("Encoding text...")
+            return cipher.encode(text)
+        else:
+            logger.info("Decoding text...")
+            return cipher.decode(text)
+            
+    finally:
+        # Körs ALLTID, även efter en 'return' i try-blocket för att säkerställa nyckeln städas bort.
+        if cipher.session_lock is False:
+            cipher.erase_key()
+            print("\n[Security] Session memory cleared. Password required for next use.")
+            logger.info("Key erased from RAM as per user security preference.")
 
 def prompt_save_to_file(content):
     if ask_yes_no("Would you like to save this to a file?"):
@@ -55,8 +73,10 @@ def prompt_save_to_file(content):
             logger.info("Failed to save file")
             print("❌ Invalid filename or path.")
 
-def print_menu():
-    # En stilren ASCII-logga
+def print_menu(cipher):
+    # Definiera bredden baserat på dina streck (55 tecken)
+    width = 55
+
     print(r"""
     _   _ _      _      _____ _       _               
    | \ | (_)    | |    / ____(_)     | |              
@@ -67,25 +87,35 @@ def print_menu():
                                | |                    
                                |_|                    
     """)
-    print("—" * 55)
-    print("       Welcome to NickCipher – Your friendly Emoji Encryption Tool      ")
-    print("—" * 55)
+    print("—" * width)
+    print("Welcome to NickCipher – Your friendly Emoji Encryption Tool".center(width))
+    print("—" * width)
+
+    # Status-logik centrerad
+    if cipher.key:
+        status_msg = "STATUS: SESSION ACTIVE (No password needed) 🔒"
+    else:
+        status_msg = "STATUS: NO KEY LOADED / SESSION SECURED 🛡️"
     
-    # Menyn i en snygg lista
+    print(status_msg.center(width))
+    
+    print("—" * width)
+    # Listan ser oftast bäst ut vänsterjusterad med lite indrag
     print(" [1]  Encrypt text (input)")
     print(" [2]  Decrypt text (input)")
     print(" [3]  Encrypt from file (.txt)")
     print(" [4]  Decrypt from file (.txt)")
-    print(" [5]  Key Management (Save/Load)")
-    print(" [6]  Information & Security")
-    print(" [7]  Exit")
-    print("—" * 55)
-    print("Selection: ", end="")
+    print(" [5]  CLEAR ACTIVE KEY / LOGOUT")
+    print(" [6]  Key Management (Save/Load)")
+    print(" [7]  Information & Security")
+    print(" [8]  Exit")
+    print("—" * width)
+    
 
 def estimate_keyspace_digits(pool_size: int, total_slots: int) -> int:
     """Return approx number of decimal digits in P(pool_size, total_slots)."""
     if total_slots > pool_size:
-        return 0  # eller raisa ValueError om du vill vara strikt
+        return 0  
 
     log10_p = 0.0
     for i in range(pool_size - total_slots + 1, pool_size + 1):
@@ -93,81 +123,93 @@ def estimate_keyspace_digits(pool_size: int, total_slots: int) -> int:
     return int(log10_p) + 1
 
 def show_information(cipher):
-    # Dynamisk hämtning av data från cipher-objektet
     pool_size = len(cipher.emoji_pool)
     total_slots = sum(cipher.weights.values())
-
     digits = estimate_keyspace_digits(pool_size, total_slots)
 
     print("\n" + "—" * 65)
-    print("🕵️  NICKCIPHER - SECURITY BRIEFING")
+    print("🕵️  NICKCIPHER - SECURITY BRIEFING".center(65))
     print("—" * 65)
-    print("🔑 PASSWORD HASHING (SHA-256)")
-    print("   Your password is processed through SHA-256 to create a")
-    print("   256-bit unique seed. This ensures that even a tiny change")
-    print("   in input creates a completely different emoji-key.")
+    
+    print("🔑 THE HUMAN ELEMENT (The Bottleneck)")
+    print("   SHA-256 turns your password into a deterministic 256-bit seed.")
+    print("   It does NOT prevent guessing — it only transforms the input.")
+    print("   • If you use '1234', an attacker can replicate your key in milliseconds.")
+    print("   💡 TIP: Use a long passphrase. Entropy (length + randomness) matters most.")
     print()
-    print("🌌 MATHEMATICAL STRENGTH")
-    print(f"   Emoji Pool (n): {pool_size} symbols")
-    print(f"   Key Slots (k):  {total_slots} positions")
+    
+    print("🌌 THE MAPPING STRENGTH (Theoretical Key Space)")
+    print(f"   If your password is strong, the mathematical barrier is massive:")
+    print(f"   • Emoji Pool: {pool_size} symbols")
+    print(f"   • Key Slots:  {total_slots} positions")
     print()
-    print("🧮 THE CALCULATION (Permutations)")
-    print(f"   The number of unique ways to arrange the emoji-key is:")
-    print(f"   P({pool_size}, {total_slots}) = {pool_size}! / ({pool_size} - {total_slots})!")  
+    
+    print("🧮 MATHEMATICAL MAGNITUDE")
+    # LaTeX för den tekniska biten
+    print(f"   Permutations: $P({pool_size}, {total_slots}) = \\frac{{{pool_size}!}}{{({pool_size} - {total_slots})!}}$")
+    print(f"   Possible Keys: A number with ~{digits} digits.")
     print()
-    print(f"   RESULT: A number with ~{digits} digits.")
-    print(f"   COMPARE: Atoms in the universe ≈ 10^80.")
-    print()
-    print("   Conclusion: Your key-space is larger than life so a brute-force")
-    print("   attack is computationally infeasible")
+    
+    print("🛡️ ATTACK VECTORS")
+    print("   • Brute-forcing the emoji-key mapping: Computationally infeasible.")
+    print("     (The search space is astronomically large)")
+    print("   • Dictionary/Guessing attacks: HIGH RISK.")
+    print("     (Security depends entirely on your password's entropy)")
     print("—" * 65)
     input("\nPress any key to return to menu...")
 
 def manage_key_interaction(cipher):
     print("\n" + "—" * 45)
-    print("🔑 KEY MANAGEMENT")
+    print("🔑 KEY MANAGEMENT".center(45))
     print("—" * 45)
-    print("1. Export: Save Password as Key File (.json)")
-    print("2. Import: Load Key File (Bypass Password)")
+    print(" 1. Export: Save current key to file (.json)")
+    print(" 2. Import: Load key from file (Bypass password)")
     
     choice = input("\nChoice: ")
 
     if choice == "1":
-        # 1. Hämta lösenord och generera nyckeln i minnet
-        pwd = get_secure_password("Enter password to convert: ")
-        cipher.generate_key(pwd)
+        # Om det inte finns en nyckel i minnet, be användaren generera en först
+        if cipher.key is None:
+            print("\n[!] No active key to export.")
+            pwd = get_secure_password("Enter password to generate key for export: ")
+            cipher.generate_key(pwd)
         
-        # 2. Ta emot filnamn och tvinga .json-ändelse
-        filename = input("Enter filename for your key (e.g. 'my_key'): ")
+        filename = input("Enter filename for your key: ").strip()
+        if not filename:
+            print("❌ Filename cannot be empty.")
+            return
+
         if not filename.endswith(".json"):
             filename += ".json"
 
-        # 3. Säkerhetskontroll 
         if is_safe_path(KEYS_DIR, filename):
             save_path = KEYS_DIR / filename
-            
-            # 4. Spara cipher.key 
             save_json(save_path, cipher.key)
-            logger.info(f"User saved key to {save_path} ")
-            print(f"\n✅ Key successfully exported to:")
-            print(f"   {save_path}")
+            logger.info(f"User saved key to {save_path}")
+            print(f"\n✅ Key successfully exported to {filename}")
         else:
-            logger.warning("SECURITY ALERT: Possible path traversal attempt blocked")
-            print("\n🚨 SECURITY ALERT: Path traversal attempt blocked!")
+            logger.warning("Path traversal attempt blocked")
+            print("\n🚨 Invalid path/filename!")
 
     elif choice == "2":
-        # Använd din befintliga filväljare för att ladda nyckeln
         filename = select_json_interaction(KEYS_DIR, "keys")
         if filename:
-            key_data = load_json(KEYS_DIR / filename)
+            #Kolla om en nyckel redan finns inläst
+            if cipher.key:
+                if not ask_yes_no("An active key is already in memory. Override it?"):
+                    print("Load cancelled.")
+                    return
             
-            # Ladda in den i objektet så att encrypt/decrypt kan använda den
-            cipher.key = key_data
-            #skapa en reversed key
+            key_data = load_json(KEYS_DIR / filename)
+            #måste skapa en reverse nyckel för den nya nyckeln.
             cipher.load_reversed_key(key_data)
-            logger.info(f"User loaded key {filename} from file")
-            print(f"\n✅ Key '{filename}' is now ACTIVE.")
-            print("   You can now decrypt files without entering a password.")
+            
+            #Fortsätt session lock så att nyckeln inte läses över
+            cipher.session_lock = True
+            
+            logger.info(f"User loaded key {filename}")
+            print(f"\n✅ Key '{filename}' is now ACTIVE and LOCKED to session.")
+
     else:
         print("Invalid choice.")
 
