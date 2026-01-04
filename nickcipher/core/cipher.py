@@ -47,6 +47,7 @@ class DynamicEmojiCipher:
         self.weights = weights
         self.key = None
         self.reversed_key = None
+        self.session_lock = None
 
         self.logger = get_logger("cipher")
 
