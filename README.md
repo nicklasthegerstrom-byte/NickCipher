@@ -1,41 +1,41 @@
 # 🔐 NickCipher
 
-**NickCipher** är ett CLI-baserat krypteringsverktyg skrivet i Python som implementerar ett **homofoniskt substitutionschiffer** med dynamisk emoji-mappning.
+**NickCipher** is a Python-based CLI encryption tool implementing a **homophonic substitution cipher** with dynamic emoji mapping.
 
-Projektet är utvecklat som ett **lärande- och designprojekt** med fokus på:
-- kryptografiska principer
-- hotmodellering
-- session- och nyckelhantering
-- säker filhantering
+The project is designed as a **learning and design-focused cryptography experiment**, emphasizing:
+- cryptographic fundamentals
+- threat modeling
+- session and key management
+- secure file handling
 
-NickCipher är **inte avsett som industrikrypto**, utan som ett transparent och pedagogiskt system där designval och begränsningar är tydliga.
-
----
-
-## ✨ Grundidé
-
-Till skillnad från ett enkelt substitutionschiffer (där t.ex. `A → 🍎` varje gång), använder NickCipher **homofonisk substitution**:
-
-- varje tecken mappas till **flera möjliga emojis**
-- vid kryptering väljs en emoji slumpmässigt från tecknets pool
-- samma klartext ger olika kryptotext varje gång
-
-Detta reducerar mönster som annars kan utnyttjas i frekvensanalys.
+NickCipher is **not intended as industrial-grade cryptography**, but as a transparent and pedagogical system where design decisions and limitations are explicit.
 
 ---
 
-## 📊 Frekvensbaserad Emoji-allokering
+## ✨ Core Idea
 
-Emoji-fördelningen baseras på **svensk teckenfrekvens**.
+Unlike simple substitution ciphers (where a character always maps to the same symbol), NickCipher uses **homophonic substitution**:
 
-Vanliga tecken får fler “alias” (emojis), ovanliga färre.  
-Syftet är att jämna ut det statistiska fingeravtrycket i kryptotexten.
+- each character maps to **multiple possible emojis**
+- encryption randomly selects from the character’s emoji pool
+- identical plaintext produces different ciphertext each time
 
-Exempel:
+This significantly reduces patterns exploitable by classical frequency analysis.
 
-| Tecken | Antal emojis |
-|------|--------------|
-| Mellanslag (` `) | 18 |
+---
+
+## 📊 Frequency-Based Emoji Allocation
+
+Emoji distribution is based on **Swedish character frequency**.
+
+Common characters are assigned more emoji “aliases”, rare characters fewer.  
+The goal is to flatten the statistical fingerprint of the ciphertext.
+
+Example:
+
+| Character | Emoji count |
+|---------|-------------|
+| Space (` `) | 18 |
 | A, E | 12 |
 | T, N | 11 |
 | R | 10 |
@@ -43,104 +43,105 @@ Exempel:
 | ., ,, !, ? | 7 |
 | X, W, Z, Q | 2 |
 
-Mellanslag har högst vikt för att dölja:
-- ordlängder
-- rytm
-- textstruktur  
+The space character is intentionally given the highest weight to obscure:
+- word boundaries
+- word length
+- sentence rhythm  
 
-(en klassisk svaghet i enkla chiffer).
+(a classic weakness in simple ciphers).
 
 ---
 
-## 🧠 Nyckelgenerering
+## 🧠 Key Generation
 
-### Deterministisk nyckel
-Nyckeln genereras deterministiskt från användarens lösenord:
+### Deterministic Key Derivation
 
-- lösenord → SHA-256
-- hash → 256-bitars seed
-- seed → deterministisk emoji-mappning
+Keys are generated deterministically from a user-provided password:
 
-Det innebär:
-- samma lösenord → samma nyckel
-- ingen nyckel behöver lagras för att dekryptera
+- password → SHA-256
+- hash → 256-bit seed
+- seed → deterministic emoji mapping
 
-⚠️ **Viktigt:**  
-SHA-256 gör processen deterministisk – inte säker mot lösenordsgissning.  
-Systemets praktiska säkerhet beror helt på lösenordets entropi.
+This means:
+- the same password always produces the same key
+- no key must be stored to decrypt ciphertext
+
+⚠️ **Important:**  
+SHA-256 makes the process deterministic — **not resistant to password guessing**.  
+The system’s practical security is entirely bounded by password entropy (length and randomness).
 
 ---
 
 ## 🔐 Session Management
 
-NickCipher har ett medvetet designat **minnes- och sessionsflöde**:
+NickCipher includes explicit **session and memory management**:
 
 ### Volatile Mode (High Security)
-- nyckeln raderas ur RAM efter varje operation
-- lösenord krävs för varje kryptering/dekryptering
-- minimerar exponering av nyckelmaterial
+- key material is erased from RAM after each operation
+- password required for every encrypt/decrypt
+- minimizes key exposure
 
 ### Persistent Session
-- nyckeln hålls i minnet under programkörningen
-- smidigare arbetsflöde
-- kan manuellt rensas via menyval
+- key remains in memory for the duration of the program
+- smoother workflow
+- can be manually wiped via the menu
 
-Detta demonstrerar skillnaden mellan **säkerhet** och **användbarhet** i praktiken.
+This intentionally demonstrates the trade-off between **security** and **usability**.
 
 ---
 
 ## 🗝️ Key Management
 
-NickCipher erbjuder även explicit nyckelhantering:
+NickCipher also supports explicit key handling:
 
-- **Export:** spara emoji-mappningen som `.json`
-- **Import:** ladda nyckel för dekryptering utan lösenord
+- **Export:** save the emoji mapping as a `.json` key file
+- **Import:** load a key to decrypt data without entering the original password
 
-⚠️ En exporterad nyckelfil är **en hemlighet**.  
-Alla som har filen kan dekryptera tillhörande data.
+⚠️ An exported key file is **a secret**.  
+Anyone with access to the file can decrypt associated ciphertext.
 
 ---
 
-## 🧮 Nyckelutrymme & Brute Force
+## 🧮 Key Space & Brute Force
 
-Antalet möjliga emoji-nycklar beräknas som permutationer:
+The number of possible emoji keys is calculated as permutations:
 
 ```
 P(n, k) = n! / (n - k)!
 ```
 
-Med aktuell emoji-pool resulterar detta i en nyckelrymd med **~80–90 decimal­siffror**.
+With the current emoji pool, this results in a key space represented by a number with **~80–90 decimal digits**.
 
-Detta gör:
-- brute-force mot **själva emoji-mappningen** beräkningsmässigt orealistisk
-- verkliga attacker riktas istället mot **lösenordet**
+This makes:
+- brute-force attacks against the emoji mapping computationally infeasible
+- real-world attacks focus instead on **password guessing**
 
 ---
 
-## 🛡️ Säker Filhantering
+## 🛡️ Secure File Handling
 
-Alla filoperationer skyddas mot path traversal:
+All file operations are protected against path traversal attacks:
 
 ```python
 base_path.resolve() in target_path.resolve().parents
 ```
 
-Detta förhindrar attacker som `../../etc/passwd`.
+This prevents attacks such as `../../etc/passwd`.
 
 ---
 
-## 📁 Mappstruktur
+## 📁 Directory Structure
 
 ```
 data/
-├── input/    # Klartextfiler (.txt)
-├── output/   # Krypterad / dekrypterad text
-├── keys/     # Nyckelfiler (bör gitignoreras)
+├── input/    # Plaintext files (.txt)
+├── output/   # Encrypted / decrypted output
+├── keys/     # Key files (should be gitignored)
 ```
 
 ---
 
-## 🚀 Installation & Körning
+## 🚀 Installation & Usage
 
 ```bash
 git clone https://github.com/nicklasthegerstrom-byte/NickCipher.git
@@ -148,28 +149,28 @@ cd NickCipher
 python -m nickcipher.main
 ```
 
-**Krav:** Python 3.9+
+**Requirements:** Python 3.9+
 
 ---
 
-## ⚠️ Begränsningar & Designval
+## ⚠️ Limitations & Design Choices
 
-- Detta är **inte modern industrikryptografi**
-- Ingen KDF, salt eller hårdvarubackning används
-- Skyddar inte mot komprometterad maskin eller keylogging
-- Avsiktligt pedagogisk implementation
+- This is **not modern industrial cryptography**
+- No KDF, salt, or hardware-backed key storage is used
+- Does not protect against a compromised system or keylogging
+- Designed intentionally for clarity and learning
 
-Projektets mål är **förståelse**, inte militär certifiering.
+The goal of this project is **understanding**, not certification.
 
 ---
 
-## 🧠 Sammanfattning
+## 🧠 Summary
 
-NickCipher demonstrerar:
-- homofonisk substitution
-- frekvensutjämning
-- deterministisk nyckelgenerering
-- session- och minnessäkerhet
-- realistisk hotmodellering
+NickCipher demonstrates:
+- homophonic substitution
+- frequency flattening
+- deterministic key generation
+- session-based key lifecycle control
+- realistic threat modeling
 
-Ett genomtänkt kryptografiskt experiment – byggt från grunden.
+A deliberately transparent cryptographic experiment — built from the ground up.
