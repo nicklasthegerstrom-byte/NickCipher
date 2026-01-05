@@ -1,3 +1,11 @@
+Metadata-Version: 2.4
+Name: nickcipher
+Version: 0.1.0
+Summary: Emoji-based cipher tool for CLI using weighted randomly generated keys.
+Author-email: Nicklas Thegerström <nicklas.thegerstrom@gmail.com>
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+
 # 🔐 NickCipher
 
 **NickCipher** is a Python-based CLI encryption tool implementing a **homophonic substitution cipher** with dynamic emoji mapping.
@@ -162,16 +170,10 @@ README.md
 
 ## 🚀 Installation & Usage
 
-### Install (development)
-
 ```bash
 git clone https://github.com/nicklasthegerstrom-byte/NickCipher.git
 cd NickCipher
-python -m venv venv
-source venv/bin/activate
-pip install -e .
-run nickcipher
-
+python -m nickcipher.main
 ```
 
 **Requirements:** Python 3.9+
