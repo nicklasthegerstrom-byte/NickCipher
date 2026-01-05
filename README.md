@@ -133,10 +133,29 @@ This prevents attacks such as `../../etc/passwd`.
 ## 📁 Directory Structure
 
 ```
+nickcipher/
+├── core/
+│   ├── cipher.py        # Encryption engine (encode/decode) + key lifecycle
+│   ├── keygen.py        # Loads emoji pool/weights from JSON + builds key mapping
+│   ├── filehandler.py   # Secure file I/O & path validation
+│   └── __init__.py
+│
+├── utils/
+│   ├── logger.py        # Centralized logging
+│   └── __init__.py
+│
+├── config.py            # Paths, constants, configuration
+├── main.py              # CLI entry point
+├── __init__.py
+│
 data/
-├── input/    # Plaintext files (.txt)
-├── output/   # Encrypted / decrypted output
-├── keys/     # Key files (should be gitignored)
+├── input/               # Plaintext files (.txt)
+├── output/              # Encrypted / decrypted output
+├── keys/                # Exported key files (should be gitignored)
+├── emoji_pool.json       # Emoji symbol source
+└── char_weight.json      # Swedish frequency weights
+│
+README.md
 ```
 
 ---
