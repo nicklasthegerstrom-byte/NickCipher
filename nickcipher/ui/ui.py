@@ -51,9 +51,12 @@ def app():
                         print("✅ Saved!")
         
         elif choice == "5":
-            cipher.erase_key()
-            print("Key cleared from session memory")
-            logger.info("User cleared key from memory")
+            if cipher.key:
+                cipher.erase_key()
+                print("Key cleared from session memory")
+                logger.info("User cleared key from memory")
+            else:
+                print("No key found in session.")
 
         elif choice == "6":
             manage_key_interaction(cipher)

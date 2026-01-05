@@ -46,3 +46,26 @@
 2026-01-05 00:26:45 [INFO] JSON saved: /Users/nicklas.thegerstrom/ws/projects/nickcipher/data/keys/lurig.json
 2026-01-05 00:26:45 [INFO] User saved key to /Users/nicklas.thegerstrom/ws/projects/nickcipher/data/keys/lurig.json
 2026-01-05 00:48:07 [INFO] User exited application
+2026-01-05 01:09:31 [INFO] User choose to read information
+2026-01-05 01:10:46 [INFO] Session keys erased from memory.
+2026-01-05 01:10:46 [INFO] User cleared key from memory
+2026-01-05 01:10:49 [INFO] Session keys erased from memory.
+2026-01-05 01:10:49 [INFO] User cleared key from memory
+2026-01-05 01:10:50 [INFO] Session keys erased from memory.
+2026-01-05 01:10:50 [INFO] User cleared key from memory
+2026-01-05 01:11:03 [INFO] Loaded JSON: /Users/nicklas.thegerstrom/ws/projects/nickcipher/data/keys/lurig.json
+2026-01-05 01:11:03 [INFO] User loaded key lurig.json
+2026-01-05 01:11:07 [INFO] Session keys erased from memory.
+2026-01-05 01:11:07 [INFO] User cleared key from memory
+2026-01-05 01:13:38 [INFO] User exited application
+2026-01-05 01:17:56 [INFO] Loaded JSON: /Users/nicklas.thegerstrom/ws/projects/nickcipher/data/keys/lurig.json
+2026-01-05 01:17:56 [INFO] User loaded key lurig.json
+2026-01-05 01:18:21 [INFO] User requested encryption
+2026-01-05 01:18:21 [INFO] Encoding text...
+2026-01-05 01:18:30 [INFO] User requested decryption
+2026-01-05 01:18:30 [INFO] Decoding text...
+2026-01-05 01:18:47 [INFO] User requested encryption
+2026-01-05 01:18:47 [INFO] Encoding text...
+2026-01-05 01:19:15 [INFO] Session keys erased from memory.
+2026-01-05 01:19:15 [INFO] User cleared key from memory
+2026-01-05 01:19:28 [INFO] User exited application

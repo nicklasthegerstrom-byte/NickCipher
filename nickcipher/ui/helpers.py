@@ -88,7 +88,7 @@ def print_menu(cipher):
                                |_|                    
     """)
     print("—" * width)
-    print("Welcome to NickCipher – Your friendly Emoji Encryption Tool".center(width))
+    print("Welcome to NickCipher – Your friendly Emoji Encryption Engine".center(width))
     print("—" * width)
 
     # Status-logik centrerad

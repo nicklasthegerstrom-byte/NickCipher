@@ -108,7 +108,7 @@ class DynamicEmojiCipher:
     def erase_key(self):
         self.key = None
         self.reversed_key = None
-        self.logger.info("Session keys erased from memory.")
+       
 
     def encode(self, text:str):
 

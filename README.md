@@ -181,6 +181,20 @@ python -m nickcipher.main
 
 The goal of this project is **understanding**, not certification.
 
+### Unsupported Characters & Fallback Handling
+
+NickCipher operates on a predefined character set defined by its frequency weights.
+If a character is encountered that does not exist in the current key mapping
+(e.g. uncommon Unicode symbols or emojis), the system applies a deterministic
+fallback character.
+
+This design choice ensures that:
+- encryption never fails due to unexpected input
+- the output remains decryptable
+- unsupported characters do not leak information through errors
+
+A warning is emitted during encryption to make this behavior explicit.
+
 ---
 
 ## 🧠 Summary
