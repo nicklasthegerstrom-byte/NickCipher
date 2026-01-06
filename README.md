@@ -1,4 +1,4 @@
-# 🔐 NickCipher
+# 🤫 NickCipher 🔐
 
 **NickCipher** is a Python-based CLI encryption tool implementing a **homophonic substitution cipher** with dynamic emoji mapping.
 
