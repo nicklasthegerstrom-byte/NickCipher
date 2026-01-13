@@ -74,3 +74,52 @@
 2026-01-05 11:04:07 [INFO] User exited application
 2026-01-05 11:07:16 [INFO] User choose to read information
 2026-01-05 11:07:20 [INFO] User exited application
+2026-01-06 20:04:32 [INFO] User requested encryption
+2026-01-06 20:05:01 [INFO] Encoding text...
+2026-01-06 20:05:23 [INFO] Saved text file: /Users/nicklas.thegerstrom/ws/projects/nickcipher/data/output/testis.txt
+2026-01-06 20:06:11 [INFO] User requested decryption
+2026-01-06 20:06:11 [INFO] Decoding text...
+2026-01-06 20:06:32 [INFO] User cleared key from memory
+2026-01-06 20:07:25 [INFO] JSON saved: /Users/nicklas.thegerstrom/ws/projects/nickcipher/data/keys/hej.json
+2026-01-06 20:07:25 [INFO] User saved key to /Users/nicklas.thegerstrom/ws/projects/nickcipher/data/keys/hej.json
+2026-01-06 20:07:47 [INFO] Loaded JSON: /Users/nicklas.thegerstrom/ws/projects/nickcipher/data/keys/hej.json
+2026-01-06 20:07:47 [INFO] User loaded key hej.json
+2026-01-06 20:07:59 [INFO] User requested decryption
+2026-01-06 20:07:59 [INFO] Decoding text...
+2026-01-06 20:08:17 [INFO] User did wrong input
+2026-01-06 20:08:53 [INFO] User requested encryption
+2026-01-06 20:08:53 [INFO] Encoding text...
+2026-01-06 20:09:10 [INFO] User opened text from file: /Users/nicklas.thegerstrom/ws/projects/nickcipher/data/input/test2.txt
+2026-01-06 20:09:10 [INFO] User requested encryption
+2026-01-06 20:09:10 [INFO] Encoding text...
+2026-01-06 20:09:10 [INFO] Saved text file: /Users/nicklas.thegerstrom/ws/projects/nickcipher/data/output/enc_test2.txt
+2026-01-06 20:16:56 [INFO] User cleared key from memory
+2026-01-07 09:05:15 [INFO] User exited application
+2026-01-07 13:15:22 [INFO] User requested encryption
+2026-01-07 13:16:18 [INFO] Encoding text...
+2026-01-07 13:16:34 [INFO] Saved text file: /Users/nicklas.thegerstrom/ws/projects/nickcipher/data/output/ettlitettest.txt
+2026-01-07 13:17:10 [INFO] User opened text from file: /Users/nicklas.thegerstrom/ws/projects/nickcipher/data/input/test2.txt
+2026-01-07 13:17:10 [INFO] User requested encryption
+2026-01-07 13:17:10 [INFO] Encoding text...
+2026-01-07 13:17:10 [INFO] Saved text file: /Users/nicklas.thegerstrom/ws/projects/nickcipher/data/output/enc_test2.txt
+2026-01-07 13:18:15 [INFO] User opened text from file: /Users/nicklas.thegerstrom/ws/projects/nickcipher/data/output/ettlitettest.txt
+2026-01-07 13:18:15 [INFO] User requested decryption
+2026-01-07 13:18:15 [INFO] Decoding text...
+2026-01-07 13:18:32 [INFO] Saved text file: /Users/nicklas.thegerstrom/ws/projects/nickcipher/data/output/decrypted_ettlitettest.txt
+2026-01-07 13:18:43 [INFO] User cleared key from memory
+2026-01-07 13:19:19 [INFO] JSON saved: /Users/nicklas.thegerstrom/ws/projects/nickcipher/data/keys/ettlitettest.json
+2026-01-07 13:19:19 [INFO] User saved key to /Users/nicklas.thegerstrom/ws/projects/nickcipher/data/keys/ettlitettest.json
+2026-01-07 13:19:59 [INFO] User choose to read information
+2026-01-07 13:23:33 [INFO] User exited application
+2026-01-11 15:51:56 [INFO] JSON saved: /Users/nicklas.thegerstrom/ws/projects/nickcipher/data/keys/alexkey.json
+2026-01-11 15:51:56 [INFO] User saved key to /Users/nicklas.thegerstrom/ws/projects/nickcipher/data/keys/alexkey.json
+2026-01-11 15:52:46 [INFO] User requested encryption
+2026-01-11 15:52:46 [INFO] Encoding text...
+2026-01-11 15:53:14 [INFO] User requested decryption
+2026-01-11 15:53:14 [INFO] Decoding text...
+2026-01-11 15:53:41 [INFO] User exited application
+2026-01-11 16:08:40 [INFO] Loaded JSON: /Users/nicklas.thegerstrom/ws/projects/nickcipher/data/keys/alexkey.json
+2026-01-11 16:08:40 [INFO] User loaded key alexkey.json
+2026-01-11 16:08:46 [INFO] User requested encryption
+2026-01-11 16:08:46 [INFO] Encoding text...
+2026-01-11 21:58:48 [INFO] User exited application
