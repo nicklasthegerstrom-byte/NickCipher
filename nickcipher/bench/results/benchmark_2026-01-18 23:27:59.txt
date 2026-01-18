@@ -1,0 +1,14 @@
+BENCH FILE STARTED - With improved encode/decode methods
+Date: 2026-01-18 23:27:59
+
+Key generation:
+  Average time: 0.0007256
+  Median time:  0.0007173
+
+Encryption (90000 chars):
+  Average time: 0.0432158
+  Median time:  0.0431785
+
+Decryption (90000 chars):
+  Average time :0.0142202
+  Median time : 0.0142310
