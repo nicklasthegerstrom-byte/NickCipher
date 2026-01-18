@@ -205,7 +205,7 @@ A warning is emitted during encryption to make this behavior explicit.
 
 --
 
-📊 Benchmark & Frequency Analysis
+### 📊 Benchmark & Frequency Analysis
 
 NickCipher has been empirically tested for both performance and resistance to basic frequency analysis.
 
@@ -213,36 +213,38 @@ NickCipher has been empirically tested for both performance and resistance to ba
 
 Measured on a local machine using repeated runs (n = 20):
 
-Key generation:
-  Average time: ~0.0007 s
+Key generation
+Average time: ~0.0007 s
 
-Encryption:
-  Average time: ~0.043 s
+Encryption
+Average time: ~0.043 s
 
-Decryption:
-  Average time: ~0.014 s
+Decryption
+Average time: ~0.014 s
 
 Result: Encryption and decryption scale linearly with input size and are fast enough for interactive CLI usage.
 
-🔍 Frequency Analysis (Plaintext vs Ciphertext)
+⸻
+
+###  🔍 Frequency Analysis (Plaintext vs Ciphertext)
 
 Plaintext letter frequency (top examples):
-
-' ' : 13400
-'e' : 8600
-'t' : 8500
-'a' : 6900
-'n' : 6400
+	•	' ' : 13400
+	•	'e' : 8600
+	•	't' : 8500
+	•	'a' : 6900
+	•	'n' : 6400
 
 Emoji ciphertext frequency (top examples):
+	•	🦝 : 768
+	•	🐩 : 753
+	•	🐐 : 753
+	•	🌝 : 745
+	•	💚 : 737
 
-🦝 : 768
-🐩 : 753
-🐐 : 753
-🌝 : 745
-💚 : 737
+⸻
 
-🧠 Interpretation
+###  🧠 Interpretation
 	•	Plaintext shows strong statistical bias (space and common letters dominate).
 	•	Emoji ciphertext shows a much flatter frequency distribution.
 	•	High-frequency symbols such as spaces are effectively obscured.
