@@ -5,16 +5,15 @@ from nickcipher.core.filehandler import write_txt
 from datetime import datetime
 
 
-
+#Tid för rapport
+timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 #Spara testresultat här:
 
 RESULTS_DIR = Path(__file__).parent / "results"
 RESULTS_DIR.mkdir(exist_ok=True)
 
-RESULTS_FILE = RESULTS_DIR / "encode_result.txt"
+RESULTS_FILE = RESULTS_DIR / f"benchmark_{timestamp}.txt"
 
-#Tid för rapport
-timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 #Skapa en krypterare redo att användas med samma lösenord och nyckel
 cipher = DynamicEmojiCipher.from_config()

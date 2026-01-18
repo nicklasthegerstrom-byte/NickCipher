@@ -1,0 +1,14 @@
+BENCH FILE STARTED
+Date: 2026-01-18 22:39:47
+
+Key generation:
+  Average time: 0.0007080
+  Median time:  0.0007007
+
+Encryption (9000 chars):
+  Average time: 0.0043171
+  Median time:  0.0042768
+
+Decryption (9000 chars):
+  Average time :0.0013921
+  Average time : 0.0013915
