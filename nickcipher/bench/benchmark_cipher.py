@@ -20,7 +20,7 @@ cipher = DynamicEmojiCipher.from_config()
 cipher.generate_key("benchmark12345")
 
 test_text = """Detta är ett exempel på en sammanhängande svensk text som används för prestandatester i ett krypteringsprogram. Texten innehåller vanliga ord, mellanslag, skiljetecken och svenska tecken som å, ä och ö för att efterlikna hur verklig text ser ut vid faktisk användning. Syftet med texten är inte att förmedla ett budskap utan att fungera som realistisk indata vid mätning av algoritmers hastighet och effektivitet. När man testar prestanda är det viktigt att använda tillräckligt stor mängd data eftersom små texter ofta ger missvisande resultat där overhead från funktioner och anrop dominerar. Genom att använda en längre sammanhängande text blir det tydligare hur krypteringsalgoritmen beter sig under mer realistiska förhållanden och hur den skalar när mängden data ökar. Denna text är därför lämplig som grund för benchmarktester genom att upprepas flera gånger för att skapa större teststrängar."""
-text = test_text * 10
+text = test_text * 100
 decode_text = cipher.encode(text)
 
 #Funktion för att testa snabbhet i krypteringen
@@ -75,7 +75,7 @@ median_key = median(results_key)
 
 
 lines = [
-    "BENCH FILE STARTED",
+    "BENCH FILE STARTED - With improved encode/decode methods",
     f"Date: {timestamp}",
     "",
     "Key generation:",
@@ -88,7 +88,7 @@ lines = [
     "",
     f"Decryption ({len(text)} chars):",
     f"  Average time :{avg_decode:.7f}",
-    f"  Average time : {median_decode:.7f}",
+    f"  Median time : {median_decode:.7f}",
 
 ]
 
