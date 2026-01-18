@@ -1,0 +1,63 @@
+BENCH FILE STARTED - With improved encode/decode methods
+Date: 2026-01-19 00:02:01
+
+Key generation:
+  Average time: 0.0007259
+  Median time:  0.0007141
+
+Encryption (90000 chars):
+  Average time: 0.0432317
+  Median time:  0.0432589
+
+Decryption (90000 chars):
+  Average time :0.0140672
+  Median time : 0.0140828
+
+Frequency analysis:
+
+
+Letter frequency (top 20):
+
+  ' ' : 13400
+  'e' : 8600
+  't' : 8500
+  'a' : 6900
+  'r' : 6900
+  'n' : 6400
+  's' : 4300
+  'i' : 3600
+  'd' : 3100
+  'm' : 2800
+  'l' : 2800
+  'g' : 2800
+  'ä' : 2200
+  'k' : 2200
+  'o' : 2200
+  'f' : 1800
+  'h' : 1600
+  'v' : 1500
+  'p' : 1400
+  'u' : 1200
+
+Emoji frequency (top 20):
+
+  🦝 : 768
+  🐩 : 753
+  🐐 : 753
+  🌝 : 745
+  💚 : 737
+  😢 : 727
+  🥵 : 719
+  🥶 : 711
+  👦 : 710
+  🐥 : 708
+  🤍 : 707
+  🦕 : 705
+  🦴 : 698
+  😅 : 685
+  🐝 : 674
+  👏 : 616
+  🤛 : 603
+  😚 : 600
+  😬 : 597
+  😌 : 585

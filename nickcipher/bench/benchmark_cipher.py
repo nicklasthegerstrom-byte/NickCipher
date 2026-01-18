@@ -57,6 +57,16 @@ def median(results):
         median = (mid1 + mid2) / 2
     return median
 
+def frequency_analysis(text):
+    counts = {}
+
+    for char in text:
+        if char in counts:
+            counts[char] += 1
+        else:
+            counts[char] = 1
+
+    return counts
 
 results_encode = loop_benchmark_time(lambda: cipher.encode(text), 20)
 results_decode = loop_benchmark_time(lambda: cipher.decode(decode_text), 20)
@@ -72,7 +82,22 @@ median_decode = median(results_decode)
 avg_key = average(results_key)
 median_key = median(results_key)
 
+letter_frequency = frequency_analysis(text)
+emoji_frequency = frequency_analysis(decode_text)
 
+sorted_emoji_freq = sorted(
+    emoji_frequency.items(),
+    key=lambda x: x[1],
+    reverse=True
+)
+sorted_letter_freq = sorted(
+    letter_frequency.items(),
+    key=lambda x: x[1],
+    reverse=True
+)
+
+top_20_emojis = sorted_emoji_freq[:20]
+top_20_letters = sorted_letter_freq[:20]
 
 lines = [
     "BENCH FILE STARTED - With improved encode/decode methods",
@@ -89,8 +114,27 @@ lines = [
     f"Decryption ({len(text)} chars):",
     f"  Average time :{avg_decode:.7f}",
     f"  Median time : {median_decode:.7f}",
+    "",
+    "Frequency analysis:",
+    "",
+
 
 ]
+
+lines.append("")
+lines.append("Letter frequency (top 20):")
+lines.append("")
+
+for char, count in top_20_letters:
+    lines.append(f"  '{char}' : {count}")
+
+lines.append("")
+lines.append("Emoji frequency (top 20):")
+lines.append("")
+
+for emoji, count in top_20_emojis:
+    lines.append(f"  {emoji} : {count}")
+
 
 report = "\n".join(lines)
 
