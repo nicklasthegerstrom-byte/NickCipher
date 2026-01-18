@@ -115,7 +115,7 @@ class DynamicEmojiCipher:
         if self.key is None:
             raise ValueError("No key generated")
         
-        encoded_result =""
+        parts = []
 
         for t in text.lower():
 
@@ -126,18 +126,21 @@ class DynamicEmojiCipher:
             
             # Välj en slumpmässig emoji från poolen för det tecknet
             t_emoji = random.choice(self.key[target])
-            encoded_result += t_emoji
+            parts.append(t_emoji)
+        
+        encoded_result = "".join(parts)
             
         return encoded_result
     
-    def decode(self, text:str):
+    def decode(self, text: str):
 
         if self.reversed_key is None:
             raise ValueError("No decode key generated")
         
-        decoded_result = ""
+        parts = []
+
         for e in text:
             if e in self.reversed_key:
-                decoded_result += self.reversed_key[e]
+                parts.append(self.reversed_key[e])
 
-        return decoded_result
+        return "".join(parts)
