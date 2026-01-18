@@ -4,3 +4,5 @@ __pycache__/
 data/keys/
 data/input
 data/ouput
+logs/
+data/output/
