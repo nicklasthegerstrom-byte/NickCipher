@@ -126,3 +126,17 @@
 2026-01-18 23:26:04 [INFO] Saved text file: /Users/nicklas.thegerstrom/ws/projects/nickcipher/nickcipher/bench/results/benchmark_2026-01-18 23:26:03.txt
 2026-01-18 23:28:00 [INFO] Saved text file: /Users/nicklas.thegerstrom/ws/projects/nickcipher/nickcipher/bench/results/benchmark_2026-01-18 23:27:59.txt
 2026-01-19 00:02:02 [INFO] Saved text file: /Users/nicklas.thegerstrom/ws/projects/nickcipher/nickcipher/bench/results/benchmark_2026-01-19 00:02:01.txt
+2026-01-20 13:40:35 [INFO] User requested encryption
+2026-01-20 13:40:41 [INFO] Encoding text...
+2026-01-20 13:40:41 [INFO] Key erased from RAM as per user security preference.
+2026-01-20 13:40:53 [INFO] User requested encryption
+2026-01-20 13:40:57 [INFO] Encoding text...
+2026-01-20 13:40:57 [INFO] Key erased from RAM as per user security preference.
+2026-01-20 13:41:19 [INFO] User did wrong input
+2026-01-20 13:41:27 [INFO] User requested decryption
+2026-01-20 13:41:30 [INFO] Decoding text...
+2026-01-20 13:41:30 [INFO] Key erased from RAM as per user security preference.
+2026-01-20 13:41:39 [INFO] User requested decryption
+2026-01-20 13:41:42 [INFO] Decoding text...
+2026-01-20 13:41:42 [INFO] Key erased from RAM as per user security preference.
+2026-01-20 14:07:01 [INFO] User exited application
